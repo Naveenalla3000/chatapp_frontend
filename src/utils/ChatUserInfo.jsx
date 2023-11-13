@@ -5,7 +5,7 @@ const ChatUserInfo = () => {
         <div className='w-full h-14 border bg-white'>
             <div className="flex ml-4 justify-start items-center">
                 <img
-                    src={'../../public/avatar.jpg'}
+                    src={'/avatar.jpg'}
                     alt='icon'
                     className='w-10 h-10 rounded-full'
                 />

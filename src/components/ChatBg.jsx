@@ -1,5 +1,6 @@
 import ChatMessages from "../utils/ChatMessages";
 import ChatUserInfo from "../utils/ChatUserInfo";
+import { useEffect, useRef } from 'react';
 
 const ChatBg = () => {
     const messages = [
@@ -156,7 +157,6 @@ const ChatBg = () => {
         },
     ];
 
-
     return (
         <div className=" h-screen w-3/4 relative">
             <ChatUserInfo />
@@ -171,7 +171,10 @@ const ChatBg = () => {
                         >
                             <span className="px-3 py-2 block rounded-md">
                                 <span>
-                                    <span className={`${message.sender === 'two' ? 'bg-white' : "bg-green-100"} px-4 py-2 rounded-lg`}>{message.text}</span>
+                                    <span className={`${message.sender === 'two' ? 'bg-white' : "bg-green-100"} px-4 py-2 rounded-lg`}>
+                                       <span> {message.text}</span>
+                                       <span className="ml-[4px]"><sub>21:00</sub></span>
+                                    </span>
                                 </span>
                             </span>
                         </div>
