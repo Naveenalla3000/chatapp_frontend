@@ -1,4 +1,4 @@
-import SearchAndCreateBox from './SearchAndCreateBox';
+import SearchAndCreateBox from './SearchBox';
 import ContactItem from './ContactItem';
 import { useState } from 'react';
 
@@ -30,7 +30,7 @@ const SideBar = () => {
         <ContactItem/>
         <ContactItem/>
         <ContactItem/>
-        <ContactItem/>
+   
       </div>
     </div>
   );
