@@ -1,7 +1,7 @@
 
 const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
     return (
-        <div className={`w-full bg-white p-1 ${isBorder ? "boder h-14" : "h-auto"}`}>
+        <div className={`w-full p-1 ${isBorder ? "boder bg-[#f0f2f5] " : "h-auto"}`}>
             <div className="flex ml-4 justify-start items-center">
                 <img
                     src={'/avatar.jpg'}
@@ -52,7 +52,7 @@ const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
                                 <option value="DE3">Germany</option>
                             </select>
                         </div>
-                        <div className="flex justify-between mt-2 gap-4">
+                        <div className="flex justify-between mt-4 gap-4">
                             <button
                                 className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
                                 onClick={handleClose}
@@ -61,7 +61,6 @@ const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
                             <button className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full">
                                 Ok
                             </button>
-
                         </div>
                     </div>
                 )
