@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material"
 
 const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
     return (
@@ -17,7 +18,7 @@ const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
             {
                 allInfo && (
                     <div className="p-4 bg-white">
-                        <table class="table-auto border">
+                        <table className="table-auto border">
                             <tbody className="border">
                                 <tr className="border h-10 px-4">
                                     <td className="px-4 py-1 ">User Name </td>
@@ -35,8 +36,8 @@ const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
                         </table>
                         <div className="">
                             <p className="mt-8">Select / Change Helper : </p>
-                            <select 
-                                className="mt-2 border rounded-lg block w-full p-2.5 outline-none ring-green-500" 
+                            <select
+                                className="mt-2 border rounded-lg block w-full p-2.5 outline-none ring-green-500"
                                 defaultValue="default"
                             >
                                 <option value="default" disabled>Choose a helper</option>
