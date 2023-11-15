@@ -3,7 +3,6 @@ import ContactItem from './ContactItem';
 import { useState } from 'react';
 
 const SideBar = () => {
-  const [selectContact,setSelectContact]= useState();
   return (
     <div className='w-1/4 min-h-screen'>
       <SearchAndCreateBox />

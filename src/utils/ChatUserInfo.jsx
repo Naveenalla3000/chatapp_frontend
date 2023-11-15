@@ -41,16 +41,16 @@ const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
                                 defaultValue="default"
                             >
                                 <option value="default" disabled>Choose a helper</option>
-                                <option value="FR">France</option>
-                                <option value="DE">Germany</option>
-                                <option value="DE2">Germany</option>
-                                <option value="US">United States</option>
-                                <option value="CA">Canada</option>
-                                <option value="FR2">France</option>
-                                <option value="US2">United States</option>
-                                <option value="CA2">Canada</option>
-                                <option value="FR3">France</option>
-                                <option value="DE3">Germany</option>
+                                <option value="John">John</option>
+                                <option value="Emma">Emma</option>
+                                <option value="Liam">Liam</option>
+                                <option value="Sophia">Sophia</option>
+                                <option value="Noah">Noah</option>
+                                <option value="Ava">Ava</option>
+                                <option value="Jackson">Jackson</option>
+                                <option value="Olivia">Olivia</option>
+                                <option value="Mason">Mason</option>
+                                <option value="Isabella">Isabella</option>
                             </select>
                         </div>
                         <div className="flex justify-between mt-4 gap-4">
