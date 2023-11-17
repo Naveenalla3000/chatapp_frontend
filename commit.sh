@@ -1,3 +1,5 @@
+#! bin/bash/zsh
+clear
 echo "Enter the commit message: "
 read -r msg
 sleep 3
