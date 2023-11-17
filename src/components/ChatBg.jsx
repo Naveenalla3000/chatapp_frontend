@@ -26,7 +26,7 @@ const ChatBg = () => {
         <div className="h-screen w-3/4 relative">
             <ChatUserInfo isBorder={true} allInfo={false} />
             <div ref={chatContainerRef} className="h-[90%] overflow-y-auto pb-10 lm:pb-14 px-10">
-                <img src="/whatsapp-chat.jpg" alt="bg" className="absolute inset-0 w-full h-full object-cover -z-10" />
+                <img src="/backGround.jpg" alt="bg" className="absolute inset-0 w-full h-full object-cover -z-10" />
                 {messages &&
                     messages.map((message, index) => (
                         <div
