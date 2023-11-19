@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal, Slide, Typography } from '@mui/material'
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal, Slide, Typography } from '@mui/material'
 import React, { useState } from 'react'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -23,11 +23,11 @@ const EmptyMessage = ({ alert, setAlert }) => {
                     <DialogTitle>{"Alert"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            Sending empty message is not allowed
+                        <Alert severity="warning"> Sending empty message is not allowed</Alert>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button style={{border:'1px solid #f44336',color:'#f44336'}} onClick={handleClose}>Ok</Button>
+                        <Button style={{border:'1px solid #fff4e5',color:'#70480f',}} onClick={handleClose}>Ok</Button>
                     </DialogActions>
                 </Dialog>
             </React.Fragment>

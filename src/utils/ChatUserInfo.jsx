@@ -1,5 +1,3 @@
-import { Typography } from "@mui/material"
-
 const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
     return (
         <div className={`w-full p-1 ${isBorder ? "boder bg-[#f0f2f5] " : "h-auto"}`}>

@@ -1,10 +1,10 @@
 import SearchAndCreateBox from './SearchBox';
 import ContactItem from './ContactItem';
-import { useState } from 'react';
+
 
 const SideBar = () => {
   return (
-    <div className='w-1/4 min-h-screen'>
+    <div className='w-1/4'>
       <SearchAndCreateBox />
       <div className="holder p-1 flex flex-col gap-1 h-screen overflow-auto bg-[#f0f2f5]">
         <ContactItem/>

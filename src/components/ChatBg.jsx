@@ -17,15 +17,12 @@ const ChatBg = () => {
     useEffect(() => {
         scrollToBottom();
         chatContainerRef.current.addEventListener('scroll', handleScroll);
-        return () => {
-            chatContainerRef.current.removeEventListener('scroll', handleScroll);
-        };
     }, [messages]);
 
     return (
-        <div className="h-screen w-3/4 relative">
+        <div className="w-3/4 relative">
             <ChatUserInfo isBorder={true} allInfo={false} />
-            <div ref={chatContainerRef} className="h-[90%] overflow-y-auto pb-10 lm:pb-14 px-10">
+            <div ref={chatContainerRef} className="h-[84%] overflow-y-auto lm:pb-10 px-10">
                 <img src="/backGround.jpg" alt="bg" className="absolute inset-0 w-full h-full object-cover -z-10" />
                 {messages &&
                     messages.map((message, index) => (
@@ -46,7 +43,9 @@ const ChatBg = () => {
                     ))}
                 {
                     showBottom && (
-                        <BackToBottom scrollToBottom={scrollToBottom} />
+                        <>
+                            <BackToBottom scrollToBottom={scrollToBottom} />
+                        </>
                     )
                 }
             </div>

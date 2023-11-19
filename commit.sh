@@ -23,4 +23,5 @@ git commit -m "$msg"
 sleep 3
 git push origin "$branch"
 sleep 3
-echo "Done"
+clear
+echo "Commit done Successfully 🚀 "

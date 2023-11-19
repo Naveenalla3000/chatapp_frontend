@@ -1,6 +1,6 @@
 const BackToBottom = ({scrollToBottom}) => {
     return (
-        <div className='relative transition-transform ease-in-out duration-1000'>
+        <div className='relative'>
             <button
                 className='w-10 h-10 bg-transparent text-white
                       border-2 border-white rounded-full focus:outline-none fixed bottom-[61px] right-[7px] flex justify-center items-center'
