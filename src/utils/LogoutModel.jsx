@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useLogoutQuery } from '../redux/features/auth/authApi';
-import { Box, Modal, Typography } from '@mui/material';
+import { Box, Modal } from '@mui/material';
+import {motion} from 'framer-motion';
 
 const LogoutModel = ({ open, handleClose }) => {
     const [logout, setLogout] = useState(false);
@@ -14,7 +15,11 @@ const LogoutModel = ({ open, handleClose }) => {
         setLogout(true);
     };
     return (
-        <div>
+        <motion.div
+            initial={{ opacity: 0, scale: 0.5}}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2 }}
+        >
             <Modal
                 keepMounted
                 open={open}
@@ -52,7 +57,7 @@ const LogoutModel = ({ open, handleClose }) => {
                     </div>
                 </Box>
             </Modal>
-        </div>
+        </motion.div>
     )
 }
 

@@ -1,6 +1,14 @@
+import {motion} from 'framer-motion'
 const BackToBottom = ({scrollToBottom}) => {
     return (
-        <div className='relative'>
+        <div 
+        className='relative'>
+            <motion.div 
+                className=""
+                initial={{ opacity: 0}}
+                animate={{ opacity: 1,  }}
+                transition={{ duration: 1.5 }}
+            >
             <button
                 className='w-10 h-10 bg-transparent text-white
                       border-2 border-white rounded-full focus:outline-none fixed bottom-[61px] right-[7px] flex justify-center items-center'
@@ -13,6 +21,7 @@ const BackToBottom = ({scrollToBottom}) => {
                     </path>
                 </svg>
             </button>
+            </motion.div>
         </div>
     );
 };

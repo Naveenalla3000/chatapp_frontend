@@ -1,71 +1,163 @@
+import { useTransition, useState } from "react";
+import InfoTable from "./InfoTable";
+import { MenuItem, Select } from "@mui/material";
+import { motion } from 'framer-motion';
+
 const ChatUserInfo = ({ isBorder, allInfo, handleClose }) => {
+    const [slide, setSlide] = useState("INFO");
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+    const variants = {
+        default: { borderBottom: "2px" },
+        active: { borderBottom: "2px solid #e2e8f0"},
+    };
+    const [, startTransition] = useTransition();
+
+    const handleTabChange = (slideName) => {
+        startTransition(() => {
+            setSlide(slideName);
+        });
+    };
+
+    const [role, setRole] = useState('');
+    const handleSetRole = (e) => { };
+    const [helper, setHelper] = useState('');
+    const handleSetHelper = (e) => { };
+
     return (
-        <div className={`w-full p-1 ${isBorder ? "boder bg-[#f0f2f5] " : "h-auto"}`}>
+        <div className={`w-full p-1 ${isBorder ? "border bg-[#f0f2f5]" : "h-[50%]"}`}>
             <div className="flex ml-4 justify-start items-center">
                 <img
                     src={'/avatar.jpg'}
                     alt='icon'
                     className='w-10 h-10 rounded-full cursor-pointer'
-                    onClick={() => setOpen(true)}
                 />
                 <div className="flex flex-col ml-4">
                     <p>Naveen</p>
                     <p>online</p>
                 </div>
             </div>
+
             {
                 allInfo && (
                     <div className="p-4 bg-white">
-                        <table className="table-auto border">
-                            <tbody className="border">
-                                <tr className="border h-10 px-4">
-                                    <td className="px-4 py-1 ">User Name </td>
-                                    <td className="px-4 py-1 ">Ranga Reddy</td>
-                                </tr>
-                                <tr className="border h-10 px-4">
-                                    <td className="px-4 py-1 w-full">Email</td>
-                                    <td className="px-4 py-1 w-full">rangareddy@gundupaguludhu.com</td>
-                                </tr>
-                                <tr className="border h-10 px-4">
-                                    <td className="px-4 py-1 w-full">Current helper</td>
-                                    <td className="px-4 py-1 w-full">Deelep kumar</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div className="">
-                            <p className="mt-8">Select / Change Helper : </p>
-                            <select
-                                className="mt-2 border rounded-lg block w-full p-2.5 outline-none ring-green-500"
-                                defaultValue="default"
+
+                        <div className="flex justify-start items-center gap-4 px-6">
+                            <motion.div
+                                animate={slide === "INFO" ? "active" : "default"}
+                                variants={variants}
+                                className=""
+                                onClick={() => handleTabChange("INFO")}
                             >
-                                <option value="default" disabled>Choose a helper</option>
-                                <option value="John">John</option>
-                                <option value="Emma">Emma</option>
-                                <option value="Liam">Liam</option>
-                                <option value="Sophia">Sophia</option>
-                                <option value="Noah">Noah</option>
-                                <option value="Ava">Ava</option>
-                                <option value="Jackson">Jackson</option>
-                                <option value="Olivia">Olivia</option>
-                                <option value="Mason">Mason</option>
-                                <option value="Isabella">Isabella</option>
-                            </select>
+                                <button className="py-2 text-xl">Details</button>
+                            </motion.div>
+                            <motion.div
+                                animate={slide === "SET_HELPER" ? "active" : "default"}
+                                variants={variants}
+                                className=""
+                                onClick={() => handleTabChange("SET_HELPER")}
+                            >
+                                <button className="py-2 text-xl">Change Helper</button>
+                            </motion.div>
+                            <motion.div
+                                animate={slide === "SET_ROLE" ? "active" : "default"}
+                                variants={variants}
+                                className=""
+                                onClick={() => handleTabChange("SET_ROLE")}
+                            >
+                                <button className="py-2 text-xl">Change Role</button>
+                            </motion.div>
                         </div>
-                        <div className="flex justify-between mt-4 gap-4">
-                            <button
-                                className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
-                                onClick={handleClose}
-                            >Cancel
-                            </button>
-                            <button className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full">
-                                Ok
-                            </button>
+
+                        <div className={`info p-6 ${slide === 'INFO' ? '' : "hidden"}`}>
+                            <InfoTable />
+                            <div className="h-[104px]"></div>
+                            <div className="flex justify-between mt-4 gap-4">
+                                <button
+                                    className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
+                                    onClick={handleClose}
+                                >Close
+                                </button>
+                                <button className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full">
+                                    Ok
+                                </button>
+                            </div>
                         </div>
+
+                        <div className={`info p-6 ${slide === 'SET_HELPER' ? '' : "hidden"}`}>
+                            <InfoTable />
+                            <form onSubmit={handleSetHelper} className="">
+                                <p className="mt-8">Select / Change Helper : </p>
+                                <Select
+                                    className="mt-2 border rounded-lg w-full outline-none ring-green-500 h-10 p-1"
+                                    defaultValue="default"
+                                    onChange={(e) => {setHelper(e.target.value)}}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem value="default" disabled>Choose a helper</MenuItem>
+                                    <MenuItem value="John">John</MenuItem>
+                                    <MenuItem value="Emma">Emma</MenuItem>
+                                </Select>
+                                <div className="flex justify-between mt-4 gap-4">
+                                    <button
+                                        className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
+                                        onClick={handleClose}
+                                    >Close
+                                    </button>
+                                    <button
+                                        className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full"
+                                        type="submit"
+                                    >
+                                        Change Helper
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div className={`info p-6 ${slide === 'SET_ROLE' ? '' : "hidden"}`}>
+                            <InfoTable />
+                            <form onSubmit={handleSetRole} className="">
+                                <p className="mt-8">Change Role : </p>
+                                <Select
+                                    className="mt-2 border rounded-lg w-full outline-none ring-green-500 h-10 p-1"
+                                    defaultValue="default"
+                                    onChange={(e) => setRole(e.target.value)}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem value="default" disabled>Choose Role</MenuItem>
+                                    <MenuItem value="Admin">Admin</MenuItem>
+                                    <MenuItem value="Helper">Helper</MenuItem>
+                                    <MenuItem value="User">User</MenuItem>
+                                </Select>
+                                <div className="flex justify-between mt-4 gap-4">
+                                    <button
+                                        className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
+                                        onClick={handleClose}
+                                    >Close
+                                    </button>
+                                    <button
+                                        className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full"
+                                        type="submit"
+                                    >
+                                        Change Role
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                 )
             }
         </div>
-    )
+    );
 }
 
-export default ChatUserInfo
+export default ChatUserInfo;

@@ -1,63 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsSend } from "react-icons/bs";
 import EmptyMessage from "./EmptyMessage";
-import EmojiPicker from "emoji-picker-react";
-import SmileEmoji from "./SmileEmoji";
+import InputEmoji from 'react-input-emoji';
 
 const ChatMessages = () => {
   const [message, setMessage] = useState('');
   const [alert, setAlert] = useState(false);
-  const [showEmojis, setShowEmojis] = useState(false);
 
-  const changeMessage = (e) => {
-    const newMessage = e.target.value;
-    setMessage(newMessage);
-  }
-
-  const sendMessage = (event) => {
-    event.preventDefault();
-    if (!message.trim()) {
-      setAlert(true);
-    } else {
-      console.log(message);
-      setMessage('');
+  const sendMessage = (text) => {
+    setMessage('');
+    if(message===undefined||message.trim()===''){
+        setAlert(true);
+        return;
     }
+    console.log(message);
   }
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage(e);
-    }
-  };
-
-  const isMessageNotEmpty = message.trim() !== '';
+  const isMessageNotEmpty = message !== undefined && message.trim() !== '';
 
   return (
     <div className="absolute bottom-0 w-full h-14 bg-[#f0f2f5]">
       <form
         className='flex gap-2 min-h-full h-full w-full items-center justify-between border-t outline-none py-2 px-2 relative'
-        onSubmit={sendMessage}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (message === undefined || message.trim() === null) {
+            setAlert(true);
+            return;
+          }
+          sendMessage(message);
+        }}
       >
-        {showEmojis && (
-          <div className="absolute bottom-[60px] left-1">
-            <EmojiPicker width={425} height={425} onEmojiClick={() => { }} />
-          </div>
-        )}
-        <span
-          className="text-slate-400 cursor-pointer"
-          onClick={() => setShowEmojis(!showEmojis)}
-        >
-          <SmileEmoji />
-        </span>
-        <textarea
-          type='text'
+        <InputEmoji
           name='message'
           value={message}
-          onChange={changeMessage}
-          onKeyDown={handleKeyDown}
-          className='w-[100%] h-full bg-white outline-none px-2 py-[6px] rounded-lg resize-none'
+          onChange={setMessage}
+          className='w-[100%] h-full bg-white outline-none py-[6px] resize-none'
           placeholder='Enter message'
+          onEnter={sendMessage}
+          borderRadius={12}
         />
         <button
           className={`w-[3.5%] h-full p-2 font-bold cursor-pointer
