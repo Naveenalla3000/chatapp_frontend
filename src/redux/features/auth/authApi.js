@@ -3,6 +3,8 @@ import { userLoggedIn, userLoggedOut } from "./authSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+
+    //login mutation logic
     login: builder.mutation({
       query: ({ email, password, recaptchValue }) => ({
         url: "/user/login",
@@ -17,15 +19,20 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          // console.log("Login user details with jwt access_token");
+          // console.log(result.data);
           dispatch(
             userLoggedIn({
               access_token: result.data.access_token,
               user: result.data.user,
-            })
+            }),
           );
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
+
     logout: builder.query({
       query: () => ({
         url: "/user/logout",

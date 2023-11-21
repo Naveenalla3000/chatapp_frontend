@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userLoggedIn } from "../auth/authSlice";
+import { userLoggedIn, userRefresh, userUserRefresh } from "../auth/authSlice";
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -7,15 +7,30 @@ export const apiSlice = createApi({
     baseUrl: import.meta.env.VITE_APP_SERVER_URI,
   }),
   endpoints: (builder) => ({
-
+    //refresh
     refreshToken: builder.query({
       query: (data) => ({
-        url: "refresh",
+        url: "user/refresh",
         method: "GET",
         credentials: "include",
       }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          // console.log(result.data);
+          dispatch(
+            userRefresh({
+              access_token: result.data.access_token,
+              user: result.data.user,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
 
+    //me
     loadUser: builder.query({
       query: (data) => ({
         url: "user/me",
@@ -25,16 +40,18 @@ export const apiSlice = createApi({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          // console.log(result.data);
           dispatch(
-            userLoggedIn({
-              access_token: result.data.activation_token,
+            userUserRefresh({
               user: result.data.user,
             })
           );
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
   }),
 });
 
-export const {useLoadUserQuery,useRefreshTokenQuery} = apiSlice;
+export const { useLoadUserQuery, useRefreshTokenQuery } = apiSlice;

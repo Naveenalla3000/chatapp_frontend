@@ -1,7 +1,6 @@
 
-import SideBar from '../components/SideBar'
-import ChatBg from '../components/ChatBg'
-import Header from '../components/SettingsModel'
+import SideBar from '../components/SideBar';
+import ChatBg from '../components/ChatBg';
 
 const ChatLayout = () => {
   return (
@@ -11,7 +10,7 @@ const ChatLayout = () => {
         <ChatBg />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ChatLayout

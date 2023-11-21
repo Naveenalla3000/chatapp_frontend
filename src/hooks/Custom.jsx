@@ -1,6 +1,7 @@
 import Loader from "../components/Loader/Loader";
-import { useLoadUserQuery } from "../redux/features/api/apiSlice";
+import { useLoadUserQuery, useRefreshTokenQuery } from "../redux/features/api/apiSlice";
 export const Custom = ({ children }) => {
-    const { isLoading } = useLoadUserQuery({});
-    return <>{isLoading ? <Loader /> : <>{children}</>}</>;
-  };
+  const { isLoading: isUserLoading } = useLoadUserQuery({});
+  const { isLoading: isAccessTokenLoading } = useRefreshTokenQuery({});
+  return <>{isAccessTokenLoading || isUserLoading ? <Loader /> : <>{children}</>}</>;
+};

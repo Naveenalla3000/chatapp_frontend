@@ -10,15 +10,12 @@ import Redurect from './hooks/Redurect';
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
-
   return (
     <div className="h-screen w-screen overflow-hidden">
-        <BrowserRouter>
           <Routes>
             <Route path="/" element={user ? <ChatLayout /> : <LoginForm />} />
             <Route path="*" element={<Redurect />} />
           </Routes>
-        </BrowserRouter>
       <ToastContainer />
     </div>
   );
