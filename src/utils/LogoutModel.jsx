@@ -37,23 +37,21 @@ const LogoutModel = ({ open, handleClose }) => {
                                 Are you sure you want to log out?
                             </p>
                             <div className="flex justify-end mt-4 gap-4">
-                                <div className=""></div>
                                 <div className="flex gap-5">
-                                <button
-                                    className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
-                                    onClick={handleClose}
-                                >Cancel
-                                </button>
-                                <button
-                                    className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full"
-                                    onClick={handleLogout}
-                                >
-                                    Ok
-                                </button>
+                                    <button
+                                        className="bg-slate-100 hover:bg-slate-200 text-black border py-2 px-8 rounded-md w-full"
+                                        onClick={handleClose}
+                                    >Cancel
+                                    </button>
+                                    <button
+                                        className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-8 rounded-md w-full"
+                                        onClick={handleLogout}
+                                    >
+                                        Ok
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </Box>
             </Modal>
