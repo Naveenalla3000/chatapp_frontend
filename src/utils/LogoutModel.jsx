@@ -11,7 +11,6 @@ const LogoutModel = ({ open, handleClose }) => {
 
     const handleLogout = async (e) => {
         e.preventDefault();
-        console.log('logout');
         setLogout(true);
     };
     return (
