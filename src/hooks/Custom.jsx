@@ -3,5 +3,14 @@ import { useLoadUserQuery, useRefreshTokenQuery } from "../redux/features/api/ap
 export const Custom = ({ children }) => {
   const { isLoading: isUserLoading } = useLoadUserQuery({});
   const { isLoading: isAccessTokenLoading } = useRefreshTokenQuery({});
-  return <>{isAccessTokenLoading || isUserLoading ? <Loader /> : <>{children}</>}</>;
+  return <>
+    {
+      isAccessTokenLoading ||
+        isUserLoading
+        ? <Loader />
+        : <>
+          {children}
+        </>
+    }
+  </>;
 };

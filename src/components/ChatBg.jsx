@@ -1,10 +1,11 @@
 import { messages } from "../data/Messages";
 import BackToBottom from "../utils/BackToBottom";
 import ChatMessages from "../utils/ChatMessages";
-import ChatUserInfo from "../utils/ChatUserInfo";
-import { useEffect, useRef, useState } from 'react';
 
-const ChatBg = () => {
+import { useEffect, useRef, useState } from 'react';
+import UserInfoHeader from "./UserInfoHeader";
+
+const ChatBg = ({userRole,selectedUser}) => {
     const [showBottom, setShowBottom] = useState(true);
     const chatContainerRef = useRef(null);
     const scrollToBottom = () => {
@@ -20,10 +21,21 @@ const ChatBg = () => {
     }, [messages]);
 
     return (
-        <div className="w-3/4 relative">
-            <ChatUserInfo isBorder={true} allInfo={false} />
-            <div ref={chatContainerRef} className="h-[84%] overflow-y-auto lm:pb-10 px-10">
-                <img src="/backGround.jpg" alt="bg" className="absolute inset-0 w-full h-full object-cover -z-10" />
+        <div className={`${userRole === "USER"?"w-0":"w-3/4 relative"}`}>
+
+            <UserInfoHeader selectedUser={selectedUser}/>
+            {
+                selectedUser && (
+                    <div className="flex justify-between items-center">
+                        {
+                            selectedUser.name
+                        }
+                    </div>
+                )
+            }
+
+            <div ref={chatContainerRef} className="h-[80%] overflow-y-auto !py-0 px-10">
+                <img src="/backGrondAi.png" alt="bg" className="absolute inset-0 w-full h-full object-cover -z-10" />
                 {messages &&
                     messages.map((message, index) => (
                         <div
@@ -31,7 +43,7 @@ const ChatBg = () => {
                             className={`my-2 ${message.sender === 'two' ? 'text-start' : 'text-end'
                                 }`}
                         >
-                            <span className="px-3 py-2 block rounded-md">
+                            <span className="px-2 py-1 block rounded-md">
                                 <span className="w-[70%]">
                                     <span className={`${message.sender === 'two' ? 'bg-white' : "bg-green-100"} px-4 py-2 rounded-lg `}>
                                         <span>{message.text}</span>
@@ -49,6 +61,7 @@ const ChatBg = () => {
                     )
                 }
             </div>
+
             <ChatMessages />
         </div>
     );

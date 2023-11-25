@@ -1,21 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GrContactInfo } from "react-icons/gr";
-import { Box, Modal, Typography } from "@mui/material";
 import UserInfoModel from "../utils/UserInfoModel";
 
-
-const ContactItem = () => {
+const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
   const [openOptions, setOpenOptions] = useState(false);
   const [open, setOpen] = useState(false);
+  const [presentUser, setPresentUser] = useState(null);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    if (presentUser === null && user !== null) {
+      setPresentUser(user);
+    }
+  }, [presentUser, user, setPresentUser]);
+
+  const handleOpen = () => {
+    setOpen(true);
+    setPresentUser(user);
+  };
+
+  const handleClose = (e) => {
+    e.preventDefault();
+    setOpen(false);
+  };
 
   return (
     <>
+
       <div
         role="button"
-        className={`group py-1 px-2 !pr-4 flex justify-between bg-white cursor-pointer rounded-3xl hover:bg-green-100 border`}
+        className={`${selectedUser === user ? 'bg-green-400' : 'bg-white'
+          } group py-1 px-2 !pr-4 flex justify-between cursor-pointer rounded-3xl border ${selectedUser !== user ? 'hover:bg-green-100' : ''
+          }`}
         onMouseLeave={() => setOpenOptions(false)}
       >
         <div className="">
@@ -31,17 +46,34 @@ const ContactItem = () => {
           `}
             ></div>
             <img src={"/avatar.jpg"} alt="icon" className="w-10 h-10 rounded-[50%]" />
-            <div className="flex flex-col ml-4">
-              <p>naveen</p>
-              <p>last message</p>
-            </div>
+            <button onClick={() => { setSelectedUser(user) }}>
+              <div className="flex flex-col ml-4">
+                <p className="text-left">{user.name}</p>
+                <p>
+                  {user.lastMessageContent.substring(0, 22)}
+                  {
+                    user.lastMessageContent.length > 22 && (
+                      <span>....</span>
+                    )
+                  }
+                </p>
+              </div>
+            </button>
           </div>
         </div>
         <div className="flex justify-center items-center text-center">
-          <span className="text-green-900">online</span>
+          <span className="">{user.onlineStatus}</span>
         </div>
       </div>
-      <UserInfoModel open={open} handleClose={handleClose} />
+      {
+        presentUser && (
+          <UserInfoModel
+            user={presentUser}
+            open={open}
+            handleClose={handleClose}
+          />
+        )
+      }
     </>
   );
 };

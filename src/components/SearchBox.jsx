@@ -10,7 +10,7 @@ const SearchBox = () => {
   }
   return (
     <>
-      <div className='flex gap-2 p-2 h-14 border bg-[#f0f2f5]'>
+      <div className='flex gap-2 p-2 h-14 bg-[#f0f2f5]'>
         <input
           type='text'
           name='user'
