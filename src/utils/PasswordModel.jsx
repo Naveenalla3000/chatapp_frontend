@@ -5,7 +5,7 @@ import { useChangePasswordMutation } from '../redux/features/user/userApi';
 import { toast } from 'react-toastify';
 
 const PasswordModel = ({ open, handleClose }) => {
-    const { data, isError, isSuccess, error } = useLoadUserQuery({}, { refetchOnMountOrArgChange: true });
+    const { data, isError, isSuccess, error } = useLoadUserQuery();
     const [user, setUser] = useState(null);
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -39,7 +39,7 @@ const PasswordModel = ({ open, handleClose }) => {
             resetAllFields();
             handleClose();
         }
-    }, [data, error, isChangePasswordSuccess, isChangePasswordError]);
+    }, [isChangePasswordSuccess, isChangePasswordError]);
 
     const handleChangePassword = (e) => {
         e.preventDefault();

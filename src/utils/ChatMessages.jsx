@@ -1,20 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BsSend } from "react-icons/bs";
 import EmptyMessage from "./EmptyMessage";
 import InputEmoji from 'react-input-emoji';
+import { useSendMessageMutation } from "../redux/features/chat/chatApi";
 
-const ChatMessages = () => {
+const ChatMessages = ({ chatId }) => {
   const [message, setMessage] = useState('');
   const [alert, setAlert] = useState(false);
+  const [sendMessage, { isSuccess, isError, error }] = useSendMessageMutation();
 
-  const sendMessage = (text) => {
-    setMessage('');
-    if(message===undefined||message.trim()===''){
-        setAlert(true);
-        return;
+  const handleSendMessage = async () => {
+    if (message === undefined || message.trim() === '') {
+      setAlert(true);
+      return;
     }
-    console.log(message);
-  }
+    setMessage('');
+    if (chatId === undefined || chatId === null || !chatId) {
+      console.log('chatId is undefined');
+      return;
+    }
+    try {
+      await sendMessage({
+        chatId,
+        content: message
+      });
+      // Additional logic after sending the message, if needed
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert("Error sending message")
+      // Handle the error as needed
+    }
+  };
+
   const isMessageNotEmpty = message !== undefined && message.trim() !== '';
 
   return (
@@ -27,7 +44,7 @@ const ChatMessages = () => {
             setAlert(true);
             return;
           }
-          sendMessage(message);
+          handleSendMessage(message);
         }}
       >
         <InputEmoji
@@ -36,7 +53,7 @@ const ChatMessages = () => {
           onChange={setMessage}
           className='w-[100%] h-full bg-white outline-none py-[6px] resize-none'
           placeholder='Enter message'
-          onEnter={sendMessage}
+          onEnter={handleSendMessage}
           borderRadius={12}
         />
         <button
@@ -50,7 +67,11 @@ const ChatMessages = () => {
           </span>
         </button>
       </form>
-      {alert && <EmptyMessage alert={alert} setAlert={setAlert} />}
+      {
+        alert && (
+          <EmptyMessage alert={alert} setAlert={setAlert} />
+        )
+      }
     </div>
   );
 }

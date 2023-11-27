@@ -1,20 +1,10 @@
 import { Box, Modal } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLoadUserQuery } from '../redux/features/api/apiSlice';
+import { useSelector } from 'react-redux';
 
 const ProfileModel = ({ open, handleClose }) => {
-    const { data, isError, isSuccess, error } = useLoadUserQuery({},{refetchOnMountOrArgChange:true});
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        if (isSuccess) {
-            setUser(data.user);
-        }
-        if (isError) {
-            console.log(isError);
-        }
-    }, [data, error]);
-
+    const {user} = useSelector(state=>state.auth);
     return (
         <div>
             <Modal

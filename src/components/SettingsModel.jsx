@@ -10,13 +10,13 @@ const SettingsModel = () => {
     const [openLogout, setOpenLogout] = useState(false);
     const [openProfile, setOpenProfile] = useState(false);
     const [openPassword, setOpenPassword] = useState(false);
-    const handleCloseLogout = () => {
+    const handleCloseLogout = (e) => {
         setOpenLogout(!openLogout);
     };
-    const handleCloseProfile = () => {
+    const handleCloseProfile = (e) => {
         setOpenProfile(!openProfile);
     };
-    const handleClosePassword = () => {
+    const handleClosePassword = (e) => {
         setOpenPassword(!openPassword);
     };
 
@@ -58,7 +58,7 @@ const SettingsModel = () => {
                     <PasswordModel open={openPassword} handleClose={handleClosePassword} />
                 )
             }
-             {
+            {
                 openLogout && (
                     <LogoutModel open={openLogout} handleClose={handleCloseLogout} />
                 )

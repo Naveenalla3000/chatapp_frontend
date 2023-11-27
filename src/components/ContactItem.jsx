@@ -19,13 +19,11 @@ const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
   };
 
   const handleClose = (e) => {
-    e.preventDefault();
-    setOpen(false);
+    setOpen(!open);
   };
 
   return (
     <>
-
       <div
         role="button"
         className={`${selectedUser === user ? 'bg-green-400' : 'bg-white'
