@@ -26,7 +26,7 @@ const UserInfoModel = ({ user, open, handleClose }) => {
             isSuccess: getHelperInfoIsSuccess,
             error: getHelperInfoError
         }] = useGetHelperinfoMutation({
-            skip: stateUser.role !== "ADMIN" && user.role === "USER",
+            skip: stateUser.role !== "ADMIN",
             refetchOnMountOrArgChange: true,
         });
 
@@ -35,7 +35,7 @@ const UserInfoModel = ({ user, open, handleClose }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (user.role === "HELPER" && availableHelperInfo === null) {
+                if (user.role === "HELPER" && availableHelperInfo === null && stateUser.role === "ADMIN") {
                     await getHelperinfo({ helperId: user._id });
 
                     if (getHelperInfoIsSuccess) {
@@ -107,7 +107,7 @@ const UserInfoModel = ({ user, open, handleClose }) => {
         active: { borderBottom: "2px solid #e2e8f0" },
     };
     const [, startTransition] = useTransition();
-    const resetFields = ()=>{
+    const resetFields = () => {
         setRole('');
         setHelper('');
     }
@@ -185,7 +185,7 @@ const UserInfoModel = ({ user, open, handleClose }) => {
 
                                 {
                                     stateUser.role === "ADMIN" && (
-                                        // get all users
+                                        // get all users under helper
                                         user.role === "HELPER" && (
                                             <motion.div
                                                 animate={slide === "GET_USERS" ? "active" : "default"}
@@ -221,19 +221,54 @@ const UserInfoModel = ({ user, open, handleClose }) => {
                                         <tbody className="border">
                                             <tr className="border h-10 px-4 bg-white">
                                                 <td className="px-4 py-1 ">User Name </td>
-                                                <td className="px-4 py-1 ">{user.name}</td>
+                                                <td className="px-4 py-1 ">
+                                                    {
+                                                        user._id === stateUser._id ? (
+                                                            <span>{
+                                                                import.meta.env.VITE_APP_COMPANY_NAME.toString()
+                                                            }</span>
+                                                        ) : (
+                                                            <span>{user.name}</span>
+                                                        )
+                                                    }
+                                                </td>
                                             </tr>
                                             <tr className="border h-10 px-4 bg-slate-100">
                                                 <td className="px-4 py-1 w-full">Email</td>
-                                                <td className="px-4 py-1 w-full">{user.email}</td>
+                                                <td className="px-4 py-1 w-full">{
+                                                    user._id === stateUser._id ? (
+                                                        <span>{
+                                                            import.meta.env.VITE_APP_COMPANY_EMAIL.toString()
+                                                        }</span>
+                                                    ) : (
+                                                        <span>{user.email}</span>
+                                                    )
+
+                                                }</td>
                                             </tr>
                                             <tr className="border h-10 px-4 bg-white">
                                                 <td className="px-4 py-1 w-full">Role</td>
-                                                <td className="px-4 py-1 w-full">{user.role}</td>
+                                                <td className="px-4 py-1 w-full">{
+                                                    user._id === stateUser._id ? (
+                                                        <span>{
+                                                            import.meta.env.VITE_APP_ADMIN_ROLE.toString()
+                                                        }</span>
+                                                    ) : (
+                                                        <span>{user.role}</span>
+                                                    )
+                                                }</td>
                                             </tr>
                                             <tr className="border h-10 px-4 bg-slate-100">
                                                 <td className="px-4 py-1 w-full">Current helper</td>
-                                                <td className="px-4 py-1 w-full">{user.helperName}</td>
+                                                <td className="px-4 py-1 w-full">{
+                                                    user._id === stateUser._id ? (
+                                                        <span>{
+                                                            import.meta.env.VITE_APP_ADMIN_NAME.toString()
+                                                        }</span>
+                                                    ) : (
+                                                        <span>{user.helperName}</span>
+                                                    )
+                                                }</td>
                                             </tr>
                                         </tbody>
                                     </table>

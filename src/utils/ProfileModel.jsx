@@ -1,6 +1,4 @@
 import { Box, Modal } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useLoadUserQuery } from '../redux/features/api/apiSlice';
 import { useSelector } from 'react-redux';
 
 const ProfileModel = ({ open, handleClose }) => {

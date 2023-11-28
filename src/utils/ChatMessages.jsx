@@ -3,12 +3,14 @@ import { BsSend } from "react-icons/bs";
 import EmptyMessage from "./EmptyMessage";
 import InputEmoji from 'react-input-emoji';
 import { useSendMessageMutation } from "../redux/features/chat/chatApi";
+import { useSelector } from "react-redux";
 
 const ChatMessages = ({ chatId }) => {
   const [message, setMessage] = useState('');
   const [alert, setAlert] = useState(false);
   const [sendMessage, { isSuccess, isError, error }] = useSendMessageMutation();
-
+  const { user: stateUser } = useSelector(state => state.auth);
+  const userRole = stateUser?.role;
   const handleSendMessage = async () => {
     if (message === undefined || message.trim() === '') {
       setAlert(true);
@@ -35,9 +37,9 @@ const ChatMessages = ({ chatId }) => {
   const isMessageNotEmpty = message !== undefined && message.trim() !== '';
 
   return (
-    <div className="absolute bottom-0 w-full h-14 bg-[#f0f2f5]">
+    <div className={`${userRole === "USER" ? "w-full" : "w-3/4"} border-[0px] fixed bottom-0 h-14 bg-[#f0f2f5]`}>
       <form
-        className='flex gap-2 min-h-full h-full w-full items-center justify-between border-t outline-none py-2 px-2 relative'
+        className='flex gap-1 min-h-full h-full w-full items-center justify-between border-t outline-none py-2 px-2 relative'
         onSubmit={(e) => {
           e.preventDefault();
           if (message === undefined || message.trim() === null) {
@@ -57,9 +59,8 @@ const ChatMessages = ({ chatId }) => {
           borderRadius={12}
         />
         <button
-          className={`w-[3.5%] h-full p-2 font-bold cursor-pointer
-            rounded-full bg-trans parent border outline-none 
-            px-2 flex justify-center items-center gap-2 ${isMessageNotEmpty ? "bg-green-500" : "bg-green-200"}`}
+          className={`sm:w-[3.5%] w-[11%] h-full p-2 font-bold cursor-pointer rounded-full border outline-none px-2 flex justify-center items-center gap-2 
+                      ${isMessageNotEmpty ? "bg-green-500" : "bg-transparent"}`}
           type="submit"
         >
           <span>

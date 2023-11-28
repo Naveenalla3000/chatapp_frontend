@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { GrContactInfo } from "react-icons/gr";
 import UserInfoModel from "../utils/UserInfoModel";
+import { useSelector } from "react-redux";
 
 const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
+  const { user: stateUser } = useSelector(state => state.auth);
   const [openOptions, setOpenOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [presentUser, setPresentUser] = useState(null);
@@ -46,7 +48,15 @@ const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
             <img src={"/avatar.jpg"} alt="icon" className="w-10 h-10 rounded-[50%]" />
             <button onClick={() => { setSelectedUser(user) }}>
               <div className="flex flex-col ml-4">
-                <p className="text-left">{user.name}</p>
+                <p className="text-left">
+                  {user._id === stateUser._id ? (
+                    <span>{
+                      import.meta.env.VITE_APP_COMPANY_NAME.toString()
+                    }</span>
+                  ) : (
+                    <span>{user.name}</span>
+                  )}
+                </p>
                 <p>
                   {user.lastMessageContent.substring(0, 22)}
                   {
