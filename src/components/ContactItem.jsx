@@ -1,28 +1,45 @@
+// ContactItem.jsx
 import React, { useState, useEffect } from "react";
 import { GrContactInfo } from "react-icons/gr";
 import UserInfoModel from "../utils/UserInfoModel";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setChatByUser } from "../redux/features/chat/chatSlice";
 
-const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
-  const { user: stateUser } = useSelector(state => state.auth);
+const ContactItem = ({ selectedUser, setSelectedUser, user }) => {
+  const { user: stateUser } = useSelector((state) => state.auth);
+  const lastMessage = useSelector((state) => {
+    const userChat = state.chat.find((chat) => chat.userId === user._id);
+    return userChat ? userChat.message : '';
+  });
+
   const [openOptions, setOpenOptions] = useState(false);
   const [open, setOpen] = useState(false);
   const [presentUser, setPresentUser] = useState(null);
 
-  useEffect(() => {
-    if (presentUser === null && user !== null) {
-      setPresentUser(user);
-    }
-  }, [presentUser, user, setPresentUser]);
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
     setOpen(true);
     setPresentUser(user);
   };
 
-  const handleClose = (e) => {
+  const handleClose = () => {
     setOpen(!open);
   };
+
+  const handleNewMessage = (user) => {
+    dispatch(setChatByUser({
+      userId: user._id,
+      message: user.lastMessageContent,
+    }));
+  };
+
+  useEffect(() => {
+    if (presentUser === null && user !== null) {
+      setPresentUser(user);
+    }
+    handleNewMessage(user);
+  }, [presentUser, user, setPresentUser]);
 
   return (
     <>
@@ -57,13 +74,9 @@ const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
                     <span>{user.name}</span>
                   )}
                 </p>
-                <p>
-                  {user.lastMessageContent.substring(0, 22)}
-                  {
-                    user.lastMessageContent.length > 22 && (
-                      <span>....</span>
-                    )
-                  }
+                <p className="text-start">
+                  {lastMessage.substring(0, 22)}
+                  {lastMessage.length > 22 && <span>....</span>}
                 </p>
               </div>
             </button>
@@ -73,15 +86,13 @@ const ContactItem = ({ selectedUser, setSelectedUser, user, index }) => {
           <span className="">{user.onlineStatus}</span>
         </div>
       </div>
-      {
-        presentUser && (
-          <UserInfoModel
-            user={presentUser}
-            open={open}
-            handleClose={handleClose}
-          />
-        )
-      }
+      {presentUser && (
+        <UserInfoModel
+          user={presentUser}
+          open={open}
+          handleClose={handleClose}
+        />
+      )}
     </>
   );
 };

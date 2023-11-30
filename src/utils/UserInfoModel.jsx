@@ -2,7 +2,7 @@ import { Modal, Box } from '@mui/material'
 import React, { useEffect, useState, useTransition } from 'react'
 import { motion } from 'framer-motion'
 import { MenuItem, Select } from "@mui/material";
-import { useChangeRoleMutation, useChangehelperMutation, useGetHelperinfoMutation, useGetavailableHelpersQuery } from '../redux/features/admin/adminApi';
+import { useChangeRoleMutation, useChangehelperMutation, useGetHelperinfoQuery, useGetavailableHelpersQuery } from '../redux/features/admin/adminApi';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 const UserInfoModel = ({ user, open, handleClose }) => {
@@ -12,6 +12,8 @@ const UserInfoModel = ({ user, open, handleClose }) => {
     const [helper, setHelper] = useState('');
     const [availableHelpers, setAvailableHelpers] = useState([]);
     const [availableHelperInfo, setAvailableHelperInfo] = useState(null);
+
+    // to get all the avaiable helper for assignment
     const {
         data: availableHelpersData,
         isSuccess: availableHelpersIsSuccess,
@@ -20,24 +22,22 @@ const UserInfoModel = ({ user, open, handleClose }) => {
         skip: stateUser.role !== "ADMIN",
     });
 
-    const [getHelperinfo,
-        {
-            data: getHelperInfoData,
-            isSuccess: getHelperInfoIsSuccess,
-            error: getHelperInfoError
-        }] = useGetHelperinfoMutation({
-            skip: stateUser.role !== "ADMIN",
-            refetchOnMountOrArgChange: true,
-        });
+    const {
+        data: getHelperInfoData,
+        isSuccess: getHelperInfoIsSuccess,
+        error: getHelperInfoError
+    } = user?.role === "HELPER"
+            ? useGetHelperinfoQuery(user?._id, { skip: stateUser.role !== "ADMIN" })
+            : { data: null, isSuccess: false, error: null };
 
     const [changehelper, { isSuccess: changeHelperSuccess, error: changeHelperError }] = useChangehelperMutation();
     const [changeRole, { isSuccess: changeRoleSuccess, error: changeRoleError }] = useChangeRoleMutation();
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (user.role === "HELPER" && availableHelperInfo === null && stateUser.role === "ADMIN") {
-                    await getHelperinfo({ helperId: user._id });
-
                     if (getHelperInfoIsSuccess) {
                         setAvailableHelperInfo(getHelperInfoData?.users);
                         //console.log(availableHelperInfo);

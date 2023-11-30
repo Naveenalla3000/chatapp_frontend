@@ -19,7 +19,6 @@ const DefaultWallpaper = ({ setSelectedUser, userRole }) => {
             genarateZoke();
             return;
         }
-        console.log("Clicked");
         setSelectedUser(stateUser);
     }
 

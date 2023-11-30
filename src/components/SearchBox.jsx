@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import SettingsModel from './SettingsModel';
+import { IconButton } from '@mui/material';
+import { MdClose } from 'react-icons/md';
 
 const SearchBox = () => {
   const [showSettings, setShowSettings] = useState(false);
@@ -17,11 +19,11 @@ const SearchBox = () => {
           className='w-[95%] h-full bg-white border outline-none px-2 rounded-lg'
           placeholder='Search for user or helper'
         />
-        <button
+        <IconButton aria-label="Settings"
           onClick={handleShowSettings}
         >
-          <BsThreeDotsVertical size={25} />
-        </button>
+          {!showSettings ? <BsThreeDotsVertical size={25} /> : <MdClose size={25} />}
+        </IconButton>
       </div>
       {
         showSettings && (

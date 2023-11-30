@@ -10,10 +10,10 @@ const PasswordModel = ({ open, handleClose }) => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
-    const [changePassword, 
-        { 
-            isSuccess: isChangePasswordSuccess, 
-            isError: isChangePasswordError, 
+    const [changePassword,
+        {
+            isSuccess: isChangePasswordSuccess,
+            isError: isChangePasswordError,
             data: changePasswordData,
             error: changePasswordError,
         }] = useChangePasswordMutation();
@@ -29,7 +29,7 @@ const PasswordModel = ({ open, handleClose }) => {
         if (isError) {
             console.log(isError);
         }
-        if(isChangePasswordSuccess || isChangePasswordError){
+        if (isChangePasswordSuccess || isChangePasswordError) {
             if (isChangePasswordSuccess) {
                 toast.success(changePasswordData.message);
             }

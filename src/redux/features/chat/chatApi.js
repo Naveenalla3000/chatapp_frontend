@@ -1,4 +1,5 @@
 import { apiSlice } from "../api/apiSlice";
+import { setChatByUser } from "./chatSlice";
 
 export const chatApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,11 +13,10 @@ export const chatApi = apiSlice.injectEndpoints({
     }),
 
     //@only admin and helper
-    getASpecificChat: builder.mutation({
-      query: (data) => ({
-        url: `chat/get-chat`,
-        method: "POST",
-        body: data,
+    getASpecificChat: builder.query({
+      query: (chatId) => ({
+        url: `chat/get-chat/${chatId}`,
+        method: "GET",
         credentials: "include",
       }),
     }),
@@ -29,8 +29,35 @@ export const chatApi = apiSlice.injectEndpoints({
         body: data,
         credentials: "include",
       }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(
+            setChatByUser({
+              userId: result.data?.chatId,
+              message: result.data?.message?.content,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+
+    //@last message of a chat
+    getLastMessage: builder.query({
+      query: (chatId) => ({
+        url: `chat/get-lastMessage/${chatId}`,
+        method: "GET",
+        credentials: "include",
+      }),
     }),
   }),
 });
 
-export const { useGetAllUsersQuery, useGetASpecificChatMutation,useSendMessageMutation } = chatApi;
+export const {
+  useGetAllUsersQuery,
+  useGetASpecificChatQuery,
+  useSendMessageMutation,
+  useGetLastMessageQuery,
+} = chatApi;

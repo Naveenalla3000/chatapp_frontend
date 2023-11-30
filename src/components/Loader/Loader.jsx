@@ -30,3 +30,14 @@ const Loader = () => {
 }
 
 export default Loader;
+//This component is get inspired from beautiful website https://www.blastabakers.com
+
+//The loader on https://www.blastabakers.com is a visually pleasing element, seamlessly
+// integrating subtle animations for a responsive and distraction-free user experience,
+// aligning perfectly with the site's cohesive design.
+
+//Thank you to the developer of https://www.blastabakers.com! Your creativity and attention
+// to detail shine through the beautiful design and user-friendly features. It's a fantastic
+// website, and your hard work is truly appreciated!
+
+

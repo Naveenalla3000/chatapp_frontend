@@ -27,4 +27,4 @@ const SocketProvider = ({ children }) => {
   );
 };
 
-export {SocketProvider,useSocket};
+export { SocketProvider, useSocket };

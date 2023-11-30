@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useLogoutQuery } from '../redux/features/auth/authApi';
 import { Box, Modal } from '@mui/material';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const LogoutModel = ({ open, handleClose }) => {
     const [logout, setLogout] = useState(false);
@@ -15,7 +15,7 @@ const LogoutModel = ({ open, handleClose }) => {
     };
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.5}}
+            initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.2 }}
         >
@@ -26,7 +26,7 @@ const LogoutModel = ({ open, handleClose }) => {
                 aria-labelledby="keep-mounted-modal-title"
                 aria-describedby="keep-mounted-modal-description"
             >
-                <Box className="absolute top-[50%] left-[50%] w-[30%] -translate-x-1/2 -translate-y-1/2 bg-white rounded-[8px] p-4 px-8 shadow-xl outline-none">
+                <Box className="absolute w-[90vw] top-[50%] left-[50%] sm:w-[30%] -translate-x-1/2 -translate-y-1/2 bg-white rounded-[8px] p-4 px-8 shadow-xl outline-none">
                     <div className="">
                         <div className="flex flex-col gap-4">
                             <p className='text-xl text-left'>

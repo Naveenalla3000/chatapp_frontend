@@ -36,11 +36,10 @@ export const adminApi = apiSlice.injectEndpoints({
 
     //@desc getHelperifno if selected user is helper
     //@only admin
-    getHelperinfo: builder.mutation({
-      query: (data) => ({
-        url: '/admin/get-helperInfo',
-        method: "POST",
-        body: data,
+    getHelperinfo: builder.query({
+      query: (helperId) => ({
+        url: `/admin/get-helperInfo/${helperId}`,
+        method: "GET",
         credentials: "include",
       }),
     }),
@@ -51,5 +50,5 @@ export const {
   useGetavailableHelpersQuery,
   useChangehelperMutation,
   useChangeRoleMutation,
-  useGetHelperinfoMutation
+  useGetHelperinfoQuery,
 } = adminApi;

@@ -2,7 +2,7 @@ import { Box, Modal } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const ProfileModel = ({ open, handleClose }) => {
-    const {user} = useSelector(state=>state.auth);
+    const { user } = useSelector(state => state.auth);
     return (
         <div>
             <Modal
@@ -12,7 +12,7 @@ const ProfileModel = ({ open, handleClose }) => {
                 aria-labelledby="keep-mounted-modal-title"
                 aria-describedby="keep-mounted-modal-description"
             >
-                <Box className="absolute w-[35%] top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 bg-white rounded-[8px] py-10 px-8 shadow-xl outline-none">
+                <Box className="absolute sm:w-[35%] w-[90vw] top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 bg-white rounded-[8px] py-10 px-8 shadow-xl outline-none">
                     <div className='w-full mb-6'>
                         <div className="flex ml-4 justify-start items-center">
                             <img
@@ -28,22 +28,22 @@ const ProfileModel = ({ open, handleClose }) => {
                     </div>
                     <div>
                         <p className='text-xl text-left pb-4'>My Profile</p>
-                    <table className="table-auto border rounded-md">
-                        <tbody className="border rounded-lg">
-                            <tr className="border h-10 px-4 bg-white">
-                                <td className="px-4 py-1">My Name</td>
-                                <td className="px-4 py-1">{user && user.name}</td>
-                            </tr>
-                            <tr className="border h-10 px-4 bg-slate-100">
-                                <td className="px-4 py-1 w-full">Email</td>
-                                <td className="px-4 py-1 w-full">{user && user.email}</td>
-                            </tr>
-                            <tr className="border h-10 px-4 bg-white">
-                                <td className="px-4 py-1 w-full">Role</td>
-                                <td className="px-4 py-1 w-full">{user && user.role}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <table className="table-auto border rounded-md">
+                            <tbody className="border rounded-lg">
+                                <tr className="border h-10 px-4 bg-white">
+                                    <td className="px-4 py-1">My Name</td>
+                                    <td className="px-4 py-1">{user && user.name}</td>
+                                </tr>
+                                <tr className="border h-10 px-4 bg-slate-100">
+                                    <td className="px-4 py-1 w-full">Email</td>
+                                    <td className="px-4 py-1 w-full">{user && user.email}</td>
+                                </tr>
+                                <tr className="border h-10 px-4 bg-white">
+                                    <td className="px-4 py-1 w-full">Role</td>
+                                    <td className="px-4 py-1 w-full">{user && user.role}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </Box>
             </Modal>
