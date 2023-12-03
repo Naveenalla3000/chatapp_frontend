@@ -4,8 +4,10 @@ import { GrContactInfo } from "react-icons/gr";
 import UserInfoModel from "../utils/UserInfoModel";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatByUser } from "../redux/features/chat/chatSlice";
+import { is } from "date-fns/locale";
+import { useSocket } from "../context/socketContext";
 
-const ContactItem = ({ selectedUser, setSelectedUser, user }) => {
+const ContactItem = ({selectedUser, setSelectedUser, user }) => {
   const { user: stateUser } = useSelector((state) => state.auth);
   const lastMessage = useSelector((state) => {
     const userChat = state.chat.find((chat) => chat.userId === user._id);
@@ -40,6 +42,8 @@ const ContactItem = ({ selectedUser, setSelectedUser, user }) => {
     }
     handleNewMessage(user);
   }, [presentUser, user, setPresentUser]);
+
+  const {socket,onlineUsers} = useSocket();
 
   return (
     <>
@@ -83,7 +87,9 @@ const ContactItem = ({ selectedUser, setSelectedUser, user }) => {
           </div>
         </div>
         <div className="flex justify-center items-center text-center">
-          <span className="">{user.onlineStatus}</span>
+          <span className="">{
+            onlineUsers.includes(user._id) ? <span className="text-green-600">Online</span> : <span className="text-red-400">Offline</span>
+          }</span>
         </div>
       </div>
       {presentUser && (

@@ -1,15 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetASpecificChatQuery, useSendMessageMutation } from '../redux/features/chat/chatApi';
 import UserInfoHeader from './UserInfoHeader';
 import ChatMessagesSkeleton from '../utils/ChatMessageSkeleton';
 import ChatMessagesInput from '../utils/ChatMessagesInput';
 import MessageModel from '../utils/MessageModel';
 import BackToBottom from '../utils/BackToBottom';
+import Typing from './Typing';
+import { useSocket } from '../context/socketContext';
+import { setChatByUser } from '../redux/features/chat/chatSlice';
+import messageNotification from '../assets/messageNotification.mp3';
 
 const Conversation = ({ selectedUser }) => {
     const { user: stateUser } = useSelector((state) => state.auth);
+    const { socket } = useSocket();
     const userRole = stateUser.role;
+
+    const dispatch = useDispatch();
 
     const [chatMessages, setChatMessages] = useState([]);
     const chatWrapperRef = useRef(null);
@@ -20,10 +27,44 @@ const Conversation = ({ selectedUser }) => {
         chatWrapperRef.current.scrollTop = chatWrapperRef.current.scrollHeight;
     };
     const [showBottom, setShowBottom] = useState(false);
-    const handleScroll = () => {
-        const maxHeight = chatWrapperRef.current.scrollHeight - chatWrapperRef.current.clientHeight;
-        setShowBottom(chatWrapperRef.current.scrollTop < maxHeight);
+
+    const [isTyping, setIsTyping] = useState(false); // To track if someone is currently typing
+    const handleOnSocketTyping = (selectedUser) => {
+        // Check if the typing event is for the currently active chat.
+        if (selectedUser !== stateUser._id) return;
+
+        // Set the typing state to true for the current chat.
+        setIsTyping(true);
     };
+    const handleOnSocketStopTyping = (selectedUser) => {
+        // Check if the stop typing event is for the currently active chat.
+        if (selectedUser !== stateUser._id) return;
+
+        // Set the typing state to false for the current chat.
+        setIsTyping(false);
+    };
+
+    useEffect(() => {
+        if (!socket) return;
+        socket.on("typing", handleOnSocketTyping);
+        socket.on("stopTyping", handleOnSocketStopTyping);
+        return () => {
+            socket.off("typing", handleOnSocketTyping);
+            socket.off("stopTyping", handleOnSocketStopTyping);
+        }
+    }, [socket, selectedUser]);
+
+    // const handleTyping = () => {
+    //     if (!isTyping) {
+    //         socket.emit(TYPING_EVENT, selectedUser._id);
+    //         setIsTyping(true);
+    //     }
+    // };
+
+    // const handleStopTyping = () => {
+    //     socket.emit(STOP_TYPING_EVENT, selectedUser._id);
+    //     setIsTyping(false);
+    // };
 
     // const [message, setMessage] = useState('');
     // const [sendMessage, { isSuccess, isError, error,data }] = useSendMessageMutation();
@@ -39,22 +80,40 @@ const Conversation = ({ selectedUser }) => {
     //     scrollToBottom();
     // };
 
-
     useEffect(() => {
         if (chatData && chatData.messages)
             setChatMessages(chatData.messages);
-        scrollToBottom();
-    });
+    }, [chatData]);
     useEffect(() => {
-        chatRefresh();
-    }, []);
-    useEffect(() => {
+        const handleScroll = () => {
+            const maxHeight = chatWrapperRef.current.scrollHeight - chatWrapperRef.current.clientHeight;
+            setShowBottom(chatWrapperRef.current.scrollTop < maxHeight);
+        };
         chatWrapperRef.current.addEventListener('scroll', handleScroll);
+        scrollToBottom();
         return () => {
             chatWrapperRef.current.removeEventListener('scroll', handleScroll);
         };
-    })
+    }, [scrollToBottom, chatData]);
 
+    useEffect(() => {
+        socket?.on('newMessage', async (message) => {
+            // console.log("Message received:", message);
+            setChatMessages((prevMessages) => [...prevMessages, message]);
+            const sound = new Audio(messageNotification);
+            if (!document.hasFocus() && message.sender !== stateUser._id) {
+                sound.play();
+            }
+            dispatch(setChatByUser({
+                userId: selectedUser._id,
+                message: message.content
+            }));
+        });
+        scrollToBottom();
+        return () => {
+            socket.off('newMessage');
+        };
+    }, [socket])
 
     return (
         <div className={`${userRole === 'USER' ? 'w-full' : 'w-3/4 relative'}`}>
@@ -72,7 +131,7 @@ const Conversation = ({ selectedUser }) => {
             >
                 {!chatLoading ? (
                     <>
-                        {Array.isArray(chatMessages) && chatMessages.length > 0 && (
+                        {chatMessages && (
                             <>
                                 {chatMessages.map((_payload, index) => (
                                     <MessageModel message={_payload} key={index} />
@@ -86,6 +145,7 @@ const Conversation = ({ selectedUser }) => {
                                 }
                             </>
                         )}
+                        {isTyping ? <Typing /> : null}
                     </>
                 ) : (
                     <div className="p-1 lg:p-4">
@@ -95,8 +155,10 @@ const Conversation = ({ selectedUser }) => {
             </div>
             <ChatMessagesInput
                 chatId={selectedUser?._id}
-                chatRefresh={chatRefresh}
+                setChatMessages={setChatMessages}
                 scrollToBottom={scrollToBottom}
+                isTyping={isTyping}
+                setIsTyping={setIsTyping}
             />
             {/* <form onSubmit={sendChat}>
                 <input

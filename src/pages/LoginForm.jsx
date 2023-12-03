@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 
 const LoginForm = () => {
   const [login, { isSuccess, error, data }] = useLoginMutation();
@@ -43,6 +44,10 @@ const LoginForm = () => {
   }, [error, isSuccess, data]);
   return (
     <div className='flex justify-center items-center h-screen w-screen bg-[#f0f2f5]'>
+      <Helmet>
+        <title> Login | {import.meta.env.VITE_APP_COMPANY_NAME}</title>
+        <link rel="canonical" href="" />
+      </Helmet>
       <div className='h-auto w-[80%] lg:w-[40%] md:w-[60%] bg-white rounded-lg shadow-lg'>
         <Typography variant="h5" component="h2" className='pt-4 text-center font-bold'>
           Login

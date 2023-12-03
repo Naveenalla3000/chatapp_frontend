@@ -4,9 +4,11 @@ import ProfileModel from '../utils/ProfileModel';
 import { IoMdLogOut } from 'react-icons/io';
 import LogoutModel from '../utils/LogoutModel';
 import { Skeleton } from '@mui/material';
+import { useSocket } from '../context/socketContext';
 
 const UserInfoHeader = ({ chatLoading, selectedUser }) => {
   const { user } = useSelector(state => state.auth);
+  const { socket, onlineUsers } = useSocket();
   const [openProfile, setOpenProfile] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
   const handleClickProfile = (e) => {
@@ -38,7 +40,13 @@ const UserInfoHeader = ({ chatLoading, selectedUser }) => {
                 ) : (
                   <p>{selectedUser.name}</p>
                 )}
-                <p>{selectedUser.onlineStatus}</p>
+                <p>{
+                  onlineUsers.includes(selectedUser._id) ? (
+                    <span className='text-green-500'>Online</span>
+                  ) : (
+                    <span className='text-red-500'>Offline</span>
+                  )
+                }</p>
               </div>
               {
                 user.role === "USER" && (

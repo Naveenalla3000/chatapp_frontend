@@ -3,32 +3,34 @@ import { HiMiniPaperAirplane } from "react-icons/hi2";
 import EmptyMessage from "./EmptyMessage";
 import InputEmoji from "react-input-emoji";
 import { useSendMessageMutation } from "../redux/features/chat/chatApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IconButton } from "@mui/material";
-import { setChatByUser } from "../redux/features/chat/chatSlice";
+import { useSocket } from "../context/socketContext";
 
-const ChatMessagesInput = ({ chatId, chatRefresh, scrollToBottom }) => {
+const ChatMessagesInput = ({ setChatMessages, chatId, scrollToBottom, isTyping, setIsTyping }) => {
   const [message, setMessage] = useState("");
   const [alert, setAlert] = useState(false);
-  const [sendMessage, { isSuccess: sendMessageIsSuccess, error: sendMessageError }] = useSendMessageMutation();
+  const [sendMessage, { isSuccess: sendMessageIsSuccess, error: sendMessageError, data: sendMessageData }] = useSendMessageMutation();
   const { user: stateUser } = useSelector((state) => state.auth);
   const userRole = stateUser?.role;
-  const dispatch = useDispatch();
+  const { socket } = useSocket();
 
   const handleSendMessage = async (e) => {
     try {
-      if (message === undefined || message.trim() === "") {
+      if (message === undefined || !message.trim()) {
         setAlert(true);
         return;
       }
-      await sendMessage({
+      socket.emit("stopTyping", chatId);
+      const res = await sendMessage({
         chatId,
         content: message,
       });
-
-      await chatRefresh();
-      scrollToBottom();
-
+      // console.log(res)
+      if (res.data.message) {
+        setChatMessages((prevMessages) => [...prevMessages, res.data.message]);
+        scrollToBottom();
+      }
       setMessage('');
       if (sendMessageError) {
         console.log(sendMessageError);
@@ -46,8 +48,19 @@ const ChatMessagesInput = ({ chatId, chatRefresh, scrollToBottom }) => {
   useEffect(() => {
     setMessage('');
   }, [chatId]);
+  useEffect(() => {
+
+    if (!isTyping) {
+      socket.emit("stopTyping", chatId);
+    }
+  }, [isTyping, chatId]);
 
   const isMessageNotEmpty = message !== undefined && message.trim() !== "";
+  useEffect(() => {
+    if (!isMessageNotEmpty) {
+      socket.emit("stopTyping", chatId);
+    }
+  }, [message])
 
   return (
     <div
@@ -61,11 +74,15 @@ const ChatMessagesInput = ({ chatId, chatRefresh, scrollToBottom }) => {
         <InputEmoji
           name="message"
           value={message}
-          onChange={setMessage}
+          onChange={(text) => {
+            setMessage(text);
+            socket.emit("typing", chatId);
+          }}
           className="w-[100%] h-[6vh] bg-white outline-none py-[6px] resize-none"
           placeholder="Enter message"
           onEnter={handleSendMessage}
           borderRadius={8}
+          onBlur={() => socket.emit("stopTyping", chatId)}
         />
         <IconButton
           aria-label="Settings"
